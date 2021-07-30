@@ -1,5 +1,5 @@
 {
-  "name": "sanskrit-bilara",
+  "name": "bilara-html-tsv",
   "version": "1.0.0",
   "description": "Scrips for Sanskrit HTML => JSON conversion for Bilara",
   "main": "index.js",
@@ -17,6 +17,7 @@
   "author": "Karl Lew",
   "license": "MIT",
   "dependencies": {
+    "log-instance": "^0.2.6",
     "mocha": "^9.0.3",
     "should": "^13.2.3"
   }
