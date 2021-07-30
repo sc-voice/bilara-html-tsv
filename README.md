@@ -1,5 +1,5 @@
 ### Overview
-See [Sanskrit text preparation](https://github.com/suttacentral/bilara-data/wiki/Sanskrit-text-preparation}
+See [Sanskrit text preparation](https://github.com/suttacentral/bilara-data/wiki/Sanskrit-text-preparation)
 
 ### Installation
 ```
