@@ -28,12 +28,19 @@ DESCRIPTION
         Logging is normally turned off, but you can specificy a LOGLEVEL:
         debug, warn, info, error. The most useful will be "info".
         The default is "warn".
+
+    -ot, --out-tsv
+        Output TSV values as TSV (default)
+
+    -oj, --out-json
+        Output TSV values as JSON
 `);
     process.exit(0);
 }
 
 let verbose = false;
 let logLevel = 'warn';
+let output = 'tsv';
 
 var nargs = process.argv.length;
 if (nargs < 3) {
@@ -44,6 +51,10 @@ for (var i = 2; i < nargs; i++) {
     if (i<2) { continue; }
     if (arg === '-?' || arg === '--help') {
         help();
+    } else if (arg === '-ot' || arg === '--out-tsv') {
+        output = 'tsv';
+    } else if (arg === '-oj' || arg === '--out-json') {
+        output = 'json';
     } else if (arg === '-v' || arg === '--verbose') {
         verbose = true;
     } else if (arg === '-ll' || arg === '--logLevel') {
@@ -55,20 +66,31 @@ for (var i = 2; i < nargs; i++) {
 
 logger.logLevel = logLevel;
 
+function outJson(segments) {
+  for (let seg of segments) {
+    console.log(JSON.stringify(seg, null, 2));
+  }
+}
+
+function outTsv(segments) {
+  let i = 0;
+  for (let seg of segments) {
+    let keys = Object.keys(seg);
+    if (i++ === 0) {
+      console.log(keys.join('\t'));
+    }
+    console.log(keys.map(k=>seg[k]).join('\t'));
+  }
+}
+
 (async function() { try {
   logger.info('HTML-TSV: Bilara Html-TSV ');
   let parser = new ParseHtml();
   let htmlBuf = await fs.promises.readFile(fname);
   let html = htmlBuf.toString().split('\n');
-  let segHtml = await parser.stripHtml(html, {verbose});
-  let parsed = await parser.parseSegmentHtml(segHtml, {verbose});
-  parsed.segment.forEach((seg,i)=>{
-    let keys = Object.keys(seg);
-    if (i === 0) {
-      console.log(keys.join('\t'));
-    }
-    console.log(keys.map(k=>seg[k]).join('\t'));
-  });
-
+  let segHtml = parser.htmlSegments(html, {verbose});
+  let segments = parser.segmentsAsColumns(segHtml, {verbose});
+  if (output === 'json') { outJson(segments); }
+  else { outTsv(segments); }
 
 } catch(e) { logger.warn(e.stack); }})();

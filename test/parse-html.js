@@ -12,12 +12,12 @@
     it("default ctor", async()=>{
       let parser = new ParseHtml();
     });
-    it("TESTTESTstripHtml(fname)", async()=>{
+    it("TESTTESThtmlSegments(fname)", async()=>{
       let verbose = 0;
       let parser = new ParseHtml();
       let htmlBuf = await fs.promises.readFile(TEST_SF276_HTML);
       let html = htmlBuf.toString().split('\n');
-      let lines = await parser.stripHtml(html, {verbose});
+      let lines = [...await parser.htmlSegments(html, {verbose})];
 
       // each line has a segment
       for (let i=0; i<lines.length; i++) {
@@ -31,12 +31,12 @@
       // last line has concluding html
       should(lines.slice(-1)[0]).match(/^<p><segment.*<.p><.article>$/);
     });
-    it("TESTTESTparse(lines)", async()=>{
+    it("TESTTESTsegmentsAsColumns(lines)", async()=>{
       let parser = new ParseHtml();
       let htmlBuf = await fs.promises.readFile(TEST_SF276_HTML);
       let html = htmlBuf.toString().split('\n');
-      let segHtml = await parser.stripHtml(html);
-      let parsed = await parser.parseSegmentHtml(segHtml);
+      let segHtml = parser.htmlSegments(html);
+      let segCols = [...parser.segmentsAsColumns(segHtml)];
       let parsedExpected = (await fs.promises.readFile(TEST_SF276_TSV))
         .toString()
         .split('\n')
@@ -46,24 +46,14 @@
         });
 
       let i = -1;
-      let segment = parsed.segment;
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-      i++; should.deepEqual(segment[i], parsedExpected[i+1]);
-    });
-    it("toTSV(fname)", async()=>{
-      let parser = new ParseHtml();
-      let tsv = await parser.toTsv(TEST_SF276_HTML);
-      let tsvExpected = (await fs.promises.readFile(TEST_SF276_TSV))
-        .toString().split('\n');
-      should(tsv[0]).equal(tsvExpected[0]);
-      //should(tsv[1]).equal(tsvExpected[1]);
-      //should(tsv[2]).equal(tsvExpected[2]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
+      i++; should.deepEqual(segCols[i], parsedExpected[i+1]);
     });
 
 });

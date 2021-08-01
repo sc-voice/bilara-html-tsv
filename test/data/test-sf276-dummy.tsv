@@ -1,25 +1,3 @@
-### Overview
-See [Sanskrit text preparation](https://github.com/suttacentral/bilara-data/wiki/Sanskrit-text-preparation)
-
-### Installation
-```
-git clone https://github.com/sc-voice/bilara-html-tsv
-cd bilara-html-tsv
-npm install
-```
-
-### Convert an HTML file
-```
-scripts/html-tsv test/data/sf276.html 
-```
-
-### Segment numbering
-Default numbering is by paragraph and segment number. 
-Each `<p>` encountered increments the paragraph number.
-The initial paragraph number is zero.
-For example, `test/data/test-sf276-dummy.html` is numbered as:
-
-```
 segment_id	html	root	comment
 sf276:0.1	<article id='sf276'><header><h1>{}</h1></header>	Candrasūtra	
 sf276:1.1	<p>{}	evaṃ mayā śrutam	
@@ -46,45 +24,3 @@ sf276:13.1	<p>{}	<supplied>baḍir vairocano 'vocat* /</supplied>
 sf276:13.2	{}	x x x x x - - - x x x x madarśi<supplied>nāṃ</supplied>	
 sf276:13.3	{}</p>	<supplied>teṣāṃ gāthābhigītena rāhuś candraṃ vimuñcati //</supplied>	Cf. Pelliot Sanskrit bleu 449 Ad: + + + + + .. .. .. .. .. .. .. (bh)i(g)itena muñce
 sf276:14.1	<p>{}</p></article>	<supplied>candrasūtraṃ samāptam* //</supplied>	
-```
-
-#### Segment numbering by example
-Segment numbers can be overridden with the segment `id='...'` attribute.
-Subsequent numbers will automatically use the new segment numbering basis.
-This _segment numbering by example_ provides the greatest flexibility of
-segment numbering since it makes no assumptions about HTML
-structure other than paragraphs.
-
-For example, let's look at the Donut Sutta:
-```
-<!DOCTYPE html>
-<html>
-<head>
-<title>DONUTS</title>
-</head>
-<body>
-<article id='donuts'><header><h1><segment'>donuts A</segment></h1></header>
-<p>
-  <segment id='chocolate:1.1'><root>donuts B</root></segment>
-  <segment><root>donuts C</root></segment>
-</p>
-<p>
-  <segment id='glazed:1.1'><root>donuts D</root></segment>
-  <segment><root>donuts E</root></segment>
-</p>
-</article>
-</body>
-</html>
-```
-
-The Donut Sutta will be numbered as
-
-```
-segment_id	html	root	comment
-donuts:0.1	<article id='donuts'><header><h1>{}</h1></header>	donuts A	
-chocolate:1.1	<p>  {}	donuts B	
-chocolate:1.2	{}</p>	donuts C	
-glazed:1.1	<p>  {}	donuts D	
-glazed:1.2	{}</p></article>	donuts E	
-```
-
