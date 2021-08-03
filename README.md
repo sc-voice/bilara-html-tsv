@@ -8,9 +8,24 @@ cd bilara-html-tsv
 npm install
 ```
 
-### Convert an HTML file
+Verify instalation by running the `html-tsv.js` script to display
+command options:
+
 ```
-scripts/html-tsv test/data/sf276.html 
+script/html-tsv.js --help
+```
+
+### Convert an HTML file
+To convert an HTML file, first create a folder to store the generated TSV file:
+
+```
+mkdir -p tsv
+```
+
+To convert and save an html file to a TSV file, 
+[redirect the terminal output to a file](https://askubuntu.com/questions/420981/how-do-i-save-terminal-output-to-a-file)
+```
+scripts/html-tsv.js test/data/sf276.html > tsv/sf276.tsv
 ```
 
 ### Segment numbering
