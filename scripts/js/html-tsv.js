@@ -4,7 +4,7 @@ const path = require('path');
 const { logger } = require('log-instance');
 const {
   ParseHtml,
-} = require('../index');
+} = require('../../index');
 
 function help() {
     console.log(`
